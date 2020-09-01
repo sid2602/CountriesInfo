@@ -1,0 +1,4 @@
+export const GET_ALL_COUNTRIES = 'GET_ALL_COUNTRIES'
+export const GET_MORE_COUNTRIES = 'GET_MORE_COUNTRIES'
+export const LOADING = 'LOADING'
+export const GET_LIMIT_COUNTRIES = 20

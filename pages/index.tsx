@@ -1,37 +1,82 @@
-import { GetStaticProps } from "next"
+import { GetStaticProps, GetServerSideProps } from "next"
 import {useState,useEffect} from 'react'
 
+//Material
+
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles({
-  
-  media: {
-    height: 140,
-  },
-});
+//Redux
+
+import {useDispatch,useSelector} from 'react-redux'
+import {getCountries,getMoreCountries} from '../store/actions/countries.action'
 
 
-export default function Home({countries}) {
+
+import InfiniteScroll from 'react-infinite-scroll-component';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+      marginTop: 24,
+    },
+
+    card: {
+      
+      textAlign: 'center',
+      flexGrow:0.75,
+      margin: 'auto',
+    },
+    media:{
+      height: 250
+    }
+  }),
+);
+
+
+export default function Home({}) {
   
-  const [data,setData] = useState(countries.slice(0,20))
+  const dispatch = useDispatch();
+  const {limitedCountries} = useSelector(state=>state.countries)
+ 
+  const [data,setData] = useState(limitedCountries)
   const classes = useStyles();
  
 
+  const handleScroll = () => {
+    dispatch(getMoreCountries(limitedCountries.length))
+  }
+
+  useEffect(()=>{
+    dispatch(getCountries())
+  },[])
+
+  useEffect(()=>{
+    setData(limitedCountries)
+  },[limitedCountries])
+
+
   return (
-    <Grid container spacing={1}>
+  <div className={classes.root}>
+    <InfiniteScroll
+      dataLength={20}
+      next={handleScroll}
+      hasMore={true}
+      loader={<h4>Loading</h4>}
+    >
+
+
+    <Grid container justify="space-around" spacing={3} >
       
-      {data.map(country => (
-        <Grid key={country.name} container item xs={12} sm ={3} >
-           <Card width="100%">
+      {data?.map(country => (
+        <Grid key={country.name} container item  lg={3} md={4} sm={6} xs={12}>
+           <Card className={classes.card}>
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
@@ -53,15 +98,23 @@ export default function Home({countries}) {
       ))}
     
     </Grid>
+    </InfiniteScroll>
+    </div>
      )
+    
 }
 
 
 
+// Home.getInitialProps = async() => {
 
-export const getStaticProps:GetStaticProps = async() => {
-    const resp = await fetch('https://restcountries.eu/rest/v2/all?fields=name;capital;region;subregion;flag;population;currencies;borders;languages');
-    const countries = await resp.json();
+// }
 
-    return {props:{countries}}
-}
+
+// export const getStaticProps:GetStaticProps = async() => {
+//     const resp = await fetch('https://restcountries.eu/rest/v2/all?fields=name;capital;region;subregion;flag;population;currencies;borders;languages');
+//     const countries = await resp.json();
+    
+
+//     return {props:{countries}}
+// }
