@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
+import Container from '@material-ui/core/Container';
 
 //redux
 
@@ -33,8 +34,10 @@ export function MyApp(props) {
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <Navigation/>
-          <CssBaseline />
-          <Component {...pageProps} />
+          <Container maxWidth="xl">
+            <CssBaseline />
+            <Component {...pageProps} />
+          </Container>
         </Provider>
       </ThemeProvider>
     </React.Fragment>

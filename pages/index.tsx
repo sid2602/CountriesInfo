@@ -30,12 +30,22 @@ const useStyles = makeStyles((theme: Theme) =>
     card: {
       
       textAlign: 'center',
-      flexGrow:0.75,
-      margin: 'auto',
+      flexGrow: 0.75,
+      // margin: 'auto',
+      height: '100%',
+    },
+    cardAction:{
+      height: '100%',
+    },
+    info:{
+      padding: "18px 36px 55px",
     },
     media:{
       height: 250
-    }
+    },
+    grid:{
+      height: '425px',
+    },
   }),
 );
 
@@ -43,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Home({}) {
   
   const dispatch = useDispatch();
-  const {limitedCountries} = useSelector(state=>state.countries)
+  const {limitedCountries,allCountries} = useSelector(state=>state.countries)
  
   const [data,setData] = useState(limitedCountries)
   const classes = useStyles();
@@ -65,9 +75,9 @@ export default function Home({}) {
   return (
   <div className={classes.root}>
     <InfiniteScroll
-      dataLength={20}
+      dataLength={limitedCountries.length}
       next={handleScroll}
-      hasMore={true}
+      hasMore={allCountries.length>limitedCountries.length}
       loader={<h4>Loading</h4>}
     >
 
@@ -75,21 +85,21 @@ export default function Home({}) {
     <Grid container justify="space-around" spacing={3} >
       
       {data?.map(country => (
-        <Grid key={country.name} container item  lg={3} md={4} sm={6} xs={12}>
+        <Grid key={country.name}  item  lg={3} md={4} sm={6} xs={12} className={classes.grid}>
            <Card className={classes.card}>
-              <CardActionArea>
+              <CardActionArea className={classes.cardAction}>
                 <CardMedia
                   className={classes.media}
                   image={country.flag}
                   title={country.name}
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
+                <CardContent >
+                  <Typography gutterBottom variant="h5" component="h3">
                     {country.name}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    population: {country.population} <br/>
-                    region: {country.region}
+                  <Typography variant="body2" color="textSecondary" component="p" className={classes.info}>
+                    Population: {country.population} <br/>
+                    Region: {country.region}
                   </Typography>
                 </CardContent>
               </CardActionArea>
