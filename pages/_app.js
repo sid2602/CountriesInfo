@@ -8,13 +8,10 @@ import Container from '@material-ui/core/Container';
 
 //redux
 
-import {Provider} from 'react-redux'
-import {createWrapper} from 'next-redux-wrapper'
-import store from '../store/store'
 
 import Navigation from '../src/Navigation'
 
-export function MyApp(props) {
+export default function MyApp(props) {
   const { Component, pageProps } = props;
 
   React.useEffect(() => {
@@ -32,11 +29,11 @@ export function MyApp(props) {
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
-        <Provider store={store}>
+        
           <Navigation/>
           <CssBaseline />
           <Component {...pageProps} />
-        </Provider>
+  
       </ThemeProvider>
     </React.Fragment>
   );
@@ -47,7 +44,4 @@ MyApp.propTypes = {
   pageProps: PropTypes.object.isRequired,
 };
 
-const makeStore = () => store;
-const wrapper = createWrapper(makeStore)
 
-export default wrapper.withRedux(MyApp)

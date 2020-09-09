@@ -13,12 +13,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-//Redux
-
-import {useDispatch,useSelector} from 'react-redux'
-import {getCountries,getMoreCountries} from '../store/actions/countries.action'
-
-
 
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -54,42 +48,38 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-export default function Home() {
+export default function Home({countries}) {
   
-  const dispatch = useDispatch();
-  const {limitedCountries,allCountries} = useSelector(state=>state.countries)
- 
-  const [data,setData] = useState(limitedCountries)
+  const [countriesToShow,setCountries] = useState([])
+
+  useEffect(()=>{
+    setCountries(countries.slice(0,20))
+  },[])
+
   const classes = useStyles();
  
 
   const handleScroll = () => {
-    dispatch(getMoreCountries(limitedCountries.length))
+
+    const {length} = countriesToShow
+    setCountries(countriesToShow.concat(countries.slice(length,length+20)))
+
   }
-
-  useEffect(()=>{
-    dispatch(getCountries())
-  },[])
-
-  useEffect(()=>{
-    setData(limitedCountries)
-  },[limitedCountries])
-
 
   return (
     <Container maxWidth="xl" className={classes.root}>
  
     <InfiniteScroll
-      dataLength={limitedCountries.length}
+      dataLength={countriesToShow.length}
       next={handleScroll}
-      hasMore={allCountries.length>limitedCountries.length}
+      hasMore={countries.length>countriesToShow.length}
       loader={<h4>Loading</h4>}
     >
 
 
     <Grid container justify="space-around" spacing={3} >
       
-      {data?.map(country => (
+      {countriesToShow?.map(country => (
       
         <Grid key={country.name}  item  lg={3} md={4} sm={6} xs={12} className={classes.grid}>
           <Link href='/country/[alphaCode]' as={`/country/${country.alpha3Code}`}>
@@ -131,10 +121,10 @@ export default function Home() {
 // }
 
 
-// export const getStaticProps:GetStaticProps = async() => {
-//     const resp = await fetch('https://restcountries.eu/rest/v2/all?fields=name;capital;region;subregion;flag;population;currencies;borders;languages');
-//     const countries = await resp.json();
+export const getStaticProps:GetStaticProps = async() => {
+    const resp = await fetch('https://restcountries.eu/rest/v2/all?fields=name;capital;region;subregion;flag;population;currencies;borders;languages;alpha3Code');
+    const countries = await resp.json();
     
 
-//     return {props:{countries}}
-// }
+    return {props:{countries}}
+}

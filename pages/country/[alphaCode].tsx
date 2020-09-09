@@ -71,7 +71,7 @@ export default function Country ({info}){
     
     const borders = info.borders.length > 0 ?( 
         info.borders.map(alpha3Code => <CountryButton key={alpha3Code} alpha3Code={alpha3Code}/>) 
-    ): <div>'NoBorders'</div>
+    ): <Typography variant="h5" component="h5" className={classes.borders}> {info.name} has no neighbors </Typography>
 
 
     return (
@@ -114,8 +114,10 @@ export default function Country ({info}){
                </Typography>
                </Grid>
 
+                {/* Borders */}
+
                <Grid item  sm={12} >
-                <Typography variant="h5" component="h5" className={classes.borders}>
+                <Typography variant="h4" component="h4" className={classes.borders}>
                     Borders:
                 </Typography>
 
@@ -140,16 +142,6 @@ export const getServerSideProps:GetServerSideProps = async ctx => {
     if(info.subregion === '') info.subregion = 'Unknown'
     if(info.capital === '') info.capital = 'Unknown'
     if(info.demonym === '') info.demonym = 'Unknown'
-    // if(info.borders.length === 0) info.borders[0] = 
-    
-    //Get Borders
 
-    // const borders =  await info.borders?.map(border=>fetch(`https://restcountries.eu/rest/v2/alpha/${border}?fields=name;alpha3Code;`))
- 
-    
-
-    // console.log(borders);
-
-    
     return {props: {info}}
 }
