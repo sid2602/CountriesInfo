@@ -1,5 +1,6 @@
 import { GetStaticProps, GetServerSideProps } from "next"
 import {useState,useEffect} from 'react'
+import Link from 'next/link'
 
 //Material
 
@@ -10,6 +11,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 
 //Redux
 
@@ -23,7 +25,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      flexGrow: 1,
       marginTop: 24,
     },
 
@@ -46,11 +47,14 @@ const useStyles = makeStyles((theme: Theme) =>
     grid:{
       height: '425px',
     },
+    link:{
+      textDecoration: 'none',
+    }
   }),
 );
 
 
-export default function Home({}) {
+export default function Home() {
   
   const dispatch = useDispatch();
   const {limitedCountries,allCountries} = useSelector(state=>state.countries)
@@ -73,7 +77,8 @@ export default function Home({}) {
 
 
   return (
-  <div className={classes.root}>
+    <Container maxWidth="xl" className={classes.root}>
+ 
     <InfiniteScroll
       dataLength={limitedCountries.length}
       next={handleScroll}
@@ -85,7 +90,10 @@ export default function Home({}) {
     <Grid container justify="space-around" spacing={3} >
       
       {data?.map(country => (
+      
         <Grid key={country.name}  item  lg={3} md={4} sm={6} xs={12} className={classes.grid}>
+          <Link href='/country/[alphaCode]' as={`/country/${country.alpha3Code}`}>
+          <a className={classes.link}>
            <Card className={classes.card}>
               <CardActionArea className={classes.cardAction}>
                 <CardMedia
@@ -104,12 +112,14 @@ export default function Home({}) {
                 </CardContent>
               </CardActionArea>
             </Card>
+            </a>
+            </Link>
         </Grid>
       ))}
     
     </Grid>
     </InfiniteScroll>
-    </div>
+    </Container>
      )
     
 }

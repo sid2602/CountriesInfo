@@ -34,10 +34,8 @@ export function MyApp(props) {
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <Navigation/>
-          <Container maxWidth="xl">
-            <CssBaseline />
-            <Component {...pageProps} />
-          </Container>
+          <CssBaseline />
+          <Component {...pageProps} />
         </Provider>
       </ThemeProvider>
     </React.Fragment>

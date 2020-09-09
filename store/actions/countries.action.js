@@ -4,7 +4,7 @@ export const getCountries = () => async dispatch => {
 
     dispatch({type: types.LOADING})
 
-    const resp = await fetch('https://restcountries.eu/rest/v2/all?fields=name;capital;region;subregion;flag;population;currencies;borders;languages');
+    const resp = await fetch('https://restcountries.eu/rest/v2/all?fields=name;capital;region;subregion;flag;population;currencies;borders;languages;alpha3Code');
     const countries = await resp.json();
 
     dispatch({

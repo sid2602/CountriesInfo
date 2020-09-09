@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -14,8 +13,9 @@ import {
   Theme,
   makeStyles,
 } from "@material-ui/core/styles";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
+
+import { useRouter } from 'next/router'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,10 +23,15 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     title: {
-      // flexGrow: 1,
-
-      display: "block",
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+      },
     },
+    normalTitle:{
+      display:'block'
+    },
+
     search: {
       position: "relative",
       borderRadius: theme.shape.borderRadius,
@@ -36,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
 
       margin: "auto",
-      // marginLeft: theme.spacing(1),
+      
       width: "auto",
     },
     searchIcon: {
@@ -54,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
+     
       paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
       transition: theme.transitions.create("width"),
       width: "100%",
@@ -91,19 +96,25 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Navigation() {
   const classes = useStyles();
 
+  const router = useRouter();
+
   const [region, setRegion] = useState("all");
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setRegion(event.target.value as string);
   };
 
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography className={router.pathname==='/'? classes.title: classes.normalTitle} variant="h6" noWrap>
             CountriesInfo
           </Typography>
+
+          { router.pathname === '/' ? (
+            <>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -132,11 +143,14 @@ export default function Navigation() {
               <MenuItem value='africa'>Africa</MenuItem>
               <MenuItem value="americas">Americas</MenuItem>
               <MenuItem value="asia">Asia</MenuItem>
-              <MenuItem value="Europe">Europe</MenuItem>
-              <MenuItem value="Oceania">Oceania</MenuItem>
+              <MenuItem value="europe">Europe</MenuItem>
+              <MenuItem value="oceania">Oceania</MenuItem>
 
             </Select>
           </FormControl>
+          </>
+          ): null
+        }
         </Toolbar>
       </AppBar>
     </div>
