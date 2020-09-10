@@ -1,10 +1,10 @@
-import React from 'react';
+import React ,{useState} from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
-import Container from '@material-ui/core/Container';
+
 
 //redux
 
@@ -13,6 +13,9 @@ import Navigation from '../src/Navigation'
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
+
+  const [search,setSearch] = useState('');
+  const [continent,setContinent] = useState('all');
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -30,9 +33,9 @@ export default function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         
-          <Navigation/>
+          <Navigation setSearch={setSearch} setContinent={setContinent} continent={continent}/>
           <CssBaseline />
-          <Component {...pageProps} />
+          <Component {...pageProps} search={search} continent={continent}/>
   
       </ThemeProvider>
     </React.Fragment>

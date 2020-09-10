@@ -48,21 +48,81 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-export default function Home({countries}) {
+export default function Home({countries,search,continent}) {
   
+  const classes = useStyles();
+  
+  // const [data,setData] = useState([])
   const [countriesToShow,setCountries] = useState([])
+  const [filters,setFilters] = useState([])
+
+  console.log(filters)
+
+  // useEffect(()=>{
+  //   setCountries(countries.slice(0,20))
+  // },[])
 
   useEffect(()=>{
-    setCountries(countries.slice(0,20))
-  },[])
 
-  const classes = useStyles();
+    const searchCountry = async (name) => {
+
+      let resp,json=[];
+
+
+      //if u search country and change continent
+
+      if(search !== '' && continent !== 'all'){
+        resp = await fetch(`https://restcountries.eu/rest/v2/name/${search}?fields=name;population;region;flag;alpha3Code`);
+        const arr = await resp.json();
+
+        arr.map(country => country.region === continent && json.push(country))
+        
+
+      }else{
+
+        
+        //other ways
+
+      if(search !== '' && continent === 'all')
+         resp = await fetch(`https://restcountries.eu/rest/v2/name/${search}?fields=name;population;region;flag;alpha3Code`);
+      else if(search === '' && continent !== 'all')
+        resp = await fetch(`https://restcountries.eu/rest/v2/region/${continent}?fields=name;population;region;flag;alpha3Code`);
+      
+       json = await resp.json();
+
+      }
+
+
+      setFilters(json)
+      setCountries(json.slice(0,20))
+    }
+
+
+    if(search !== '' || continent !== 'all'){
+      searchCountry(search);
+    }
+    else
+    {
+      setFilters([])
+      setCountries(countries.slice(0,20))
+    }
+
+
+
+  },[search,continent])
  
 
   const handleScroll = () => {
 
     const {length} = countriesToShow
-    setCountries(countriesToShow.concat(countries.slice(length,length+20)))
+    
+    if(filters.length>0){
+      setCountries(countriesToShow.concat(filters.slice(length,length+20)))
+    }else{
+      setCountries(countriesToShow.concat(countries.slice(length,length+20)))
+    }
+
+    
 
   }
 
@@ -122,7 +182,7 @@ export default function Home({countries}) {
 
 
 export const getStaticProps:GetStaticProps = async() => {
-    const resp = await fetch('https://restcountries.eu/rest/v2/all?fields=name;capital;region;subregion;flag;population;currencies;borders;languages;alpha3Code');
+    const resp = await fetch('https://restcountries.eu/rest/v2/all?fields=name;population;region;flag;alpha3Code');
     const countries = await resp.json();
     
 

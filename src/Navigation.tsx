@@ -93,15 +93,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function Navigation() {
+export default function Navigation({setContinent,setSearch,continent}) {
   const classes = useStyles();
 
   const router = useRouter();
 
-  const [region, setRegion] = useState("all");
+  // const [region, setRegion] = useState("all");
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setRegion(event.target.value as string);
+  const handleChange = (event: React.ChangeEvent<{ value: string }>) => {
+
+    if(event.target?.name === 'input')
+      setSearch(event.target.value as string)
+    else 
+      setContinent(event.target.value as string);
   };
 
 
@@ -121,6 +125,8 @@ export default function Navigation() {
             </div>
             <InputBase
               placeholder="Search country"
+              name='input'
+              onChange={handleChange}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -134,17 +140,18 @@ export default function Navigation() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={region}
+              name='select'
+              value={continent}
               onChange={handleChange}
               className={classes.select}
               inputProps={{'fill':'white'}}
             >
               <MenuItem value='all'>All</MenuItem>
-              <MenuItem value='africa'>Africa</MenuItem>
-              <MenuItem value="americas">Americas</MenuItem>
-              <MenuItem value="asia">Asia</MenuItem>
-              <MenuItem value="europe">Europe</MenuItem>
-              <MenuItem value="oceania">Oceania</MenuItem>
+              <MenuItem value='Africa'>Africa</MenuItem>
+              <MenuItem value="Americas">Americas</MenuItem>
+              <MenuItem value="Asia">Asia</MenuItem>
+              <MenuItem value="Europe">Europe</MenuItem>
+              <MenuItem value="Oceania">Oceania</MenuItem>
 
             </Select>
           </FormControl>
