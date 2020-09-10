@@ -22,14 +22,13 @@ import {motion} from 'framer-motion'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginTop: 24,
+      marginTop: theme.spacing(12),
     },
 
     card: {
       
       textAlign: 'center',
       flexGrow: 0.75,
-      // margin: 'auto',
       height: '100%',
     },
     cardAction:{

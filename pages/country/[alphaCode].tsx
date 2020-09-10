@@ -16,7 +16,7 @@ import {motion} from 'framer-motion'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-        marginTop: 24,
+        marginTop: theme.spacing(12),
         [theme.breakpoints.up('md')]: {
            
           
@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
         top: 0,
         right: 0,
         bottom: 0,
+        marginTop:0,
     },
     },
 
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
           },
     },
     p:{
-        color: 'white',
+        color: '#616161',
         fontWeight: 'bold',
         fontSize: '1.4em',
         lineHeight: '2em',
@@ -56,10 +57,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     span:{
         fontWeight:'normal',
-        color: '#e4e4e4',
+        color: '#969696',
     },
     borders:{
-        color: 'white',
+        color: '#616161',
         margin: '1em 0',
     },
     

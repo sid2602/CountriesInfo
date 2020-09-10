@@ -111,7 +111,7 @@ export default function Navigation({setContinent,setSearch,continent}) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <Typography className={router.pathname==='/'? classes.title: classes.normalTitle} variant="h6" noWrap>
             CountriesInfo
