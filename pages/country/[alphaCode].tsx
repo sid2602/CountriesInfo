@@ -5,15 +5,19 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import Zoom from '@material-ui/core/Zoom';
+import Slide from '@material-ui/core/Slide';
 
 import BackButton from '../../src/BackButton'
 import CountryButton from '../../src/CountryButton'
 
+
+import {motion} from 'framer-motion'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
         marginTop: 24,
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
            
           
         display: 'flex',
@@ -59,8 +63,6 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: '1em 0',
     },
     
-   
-    
     
   }));
 
@@ -75,6 +77,7 @@ export default function Country ({info}){
 
 
     return (
+        <motion.div exit={{opacity: 0}} initial={{opacity: 0}} animate={{opacity: 1}}>
       <Container maxWidth="lg" className={classes.root}>
         <Grid container  justify='space-around' spacing={6} >
             <Grid item xs={12}>
@@ -83,12 +86,14 @@ export default function Country ({info}){
 
             {/* IMAGE */}
 
-            <Grid container item md={6} sm={12} >
-                <img src={info?.flag} alt={info?.name} className={classes.image}/>
-            </Grid>
-
+            <Zoom  in={true} >
+                <Grid container item md={6} sm={12} >
+                    <img src={info?.flag} alt={info?.name} className={classes.image}/>
+                </Grid>
+            </Zoom>
             {/* INFO */}
 
+            <Slide direction="left" in={true}>
             <Grid container item md={6} sm={12} spacing={1} className={classes.center}>
                <Grid item  sm={4} md={6} >
                <Typography variant="body2"  component="p" className={classes.p}>
@@ -126,9 +131,11 @@ export default function Country ({info}){
                </Grid>
 
             </Grid>
+            </Slide>
 
         </Grid>
     </Container>
+     </motion.div>
     );
 }
 

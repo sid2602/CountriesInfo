@@ -5,9 +5,8 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
 
-
-//redux
-
+//Framer Motion
+import {  AnimatePresence } from "framer-motion"
 
 import Navigation from '../src/Navigation'
 
@@ -32,11 +31,15 @@ export default function MyApp(props) {
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
-        
-          <Navigation setSearch={setSearch} setContinent={setContinent} continent={continent}/>
-          <CssBaseline />
-          <Component {...pageProps} search={search} continent={continent}/>
-  
+
+     
+        <Navigation setSearch={setSearch} setContinent={setContinent} continent={continent}/>
+        <CssBaseline />
+
+        <AnimatePresence exitBeforeEnter>
+            <Component {...pageProps} search={search} continent={continent}/>
+        </AnimatePresence>
+
       </ThemeProvider>
     </React.Fragment>
   );
