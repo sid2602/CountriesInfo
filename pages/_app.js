@@ -33,7 +33,7 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme}>
 
      
-        <Navigation setSearch={setSearch} setContinent={setContinent} continent={continent}/>
+        <Navigation search={search} setSearch={setSearch} setContinent={setContinent} continent={continent}/>
         <CssBaseline />
 
         <AnimatePresence exitBeforeEnter>

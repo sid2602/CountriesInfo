@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { useEffect, useState } from "react";
+
 
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -147,9 +147,24 @@ export const getServerSideProps:GetServerSideProps = async ctx => {
     const response = await fetch(`https://restcountries.eu/rest/v2/alpha/${alphaCode}`)
     const info = await response.json();
 
+    if(info.region === '') info.region = 'Unknown'
     if(info.subregion === '') info.subregion = 'Unknown'
     if(info.capital === '') info.capital = 'Unknown'
     if(info.demonym === '') info.demonym = 'Unknown'
 
     return {props: {info}}
 }
+
+// export const getStaticPaths:GetStaticPaths = () => {
+//     const mostPopularCountries: Array<string> = ['FRA','USA','CHN','ESP','ITA','TUR','GBR','DEU','RUS','AUT','HKG','THA',"SAU",'GRC','CAN','POL'];
+//     const paths = mostPopularCountries.map(country => {
+//         return {params: {alphaCode: country}}
+//     })
+
+//     return {
+//         // falback: false,
+//         paths,
+//         fallback: false,
+//     }
+
+// }

@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function Navigation({setContinent,setSearch,continent}) {
+export default function Navigation({setContinent,setSearch,continent,search}) {
   const classes = useStyles();
 
   const router = useRouter();
@@ -126,6 +126,7 @@ export default function Navigation({setContinent,setSearch,continent}) {
             <InputBase
               placeholder="Search country"
               name='input'
+              value={search}
               onChange={handleChange}
               classes={{
                 root: classes.inputRoot,
