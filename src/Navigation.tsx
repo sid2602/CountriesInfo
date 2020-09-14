@@ -100,9 +100,9 @@ export default function Navigation({setContinent,setSearch,continent,search}) {
 
   // const [region, setRegion] = useState("all");
 
-  const handleChange = (event: React.ChangeEvent<{ value: string }>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
-    if(event.target?.name === 'input')
+    if(event.target?.name as string === 'input')
       setSearch(event.target.value as string)
     else 
       setContinent(event.target.value as string);
