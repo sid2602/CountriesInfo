@@ -9,12 +9,37 @@ import theme from '../src/theme';
 import {  AnimatePresence } from "framer-motion"
 
 import Navigation from '../src/Navigation'
+import { Router } from 'next/router';
+
+
+import NextNProgress from 'nextjs-progressbar'
+// import Nprogress from 'nprogress'
+// import 'nprogress/nprogress.css'
+
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
 
   const [search,setSearch] = useState('');
   const [continent,setContinent] = useState('all');
+
+  // Router.events.on('routeChangeStart', ()=>{
+  //   Nprogress.start();
+  // })
+
+  // Router.events.on('routeChangeComplete', ()=>{
+  //   Nprogress.done();
+  // })
+
+  // Router.events.on('routeChangeError', ()=>{
+  //   Nprogress.done();
+  // })
+
+//   routeChangeStart(url) - Fires when a route starts to change
+// routeChangeComplete(url) - Fires when a route changed completely
+// routeChangeError(err, url)
+
+
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -23,6 +48,8 @@ export default function MyApp(props) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
+
+
 
   return (
     <React.Fragment>
@@ -35,7 +62,7 @@ export default function MyApp(props) {
      
         <Navigation search={search} setSearch={setSearch} setContinent={setContinent} continent={continent}/>
         <CssBaseline />
-
+        <NextNProgress color="#1769aa" height="5"/>
         <AnimatePresence exitBeforeEnter>
             <Component {...pageProps} search={search} continent={continent}/>
         </AnimatePresence>

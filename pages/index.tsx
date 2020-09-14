@@ -197,10 +197,18 @@ export default function Home({countries,search,continent}) {
      ) 
 }
 
+export interface CountryData {
+  name: string,
+  population: number,
+  region: string,
+  flag: string,
+  alpha3Code: string
+}
+
 
 export const getStaticProps:GetStaticProps = async() => {
     const resp = await fetch('https://restcountries.eu/rest/v2/all?fields=name;population;region;flag;alpha3Code');
-    const countries = await resp.json();
+    const countries:CountryData[] | undefined = await resp.json();
     
 
     return {props:{countries}}

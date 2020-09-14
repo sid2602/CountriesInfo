@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 export default function Country ({info}){
-   
+    
     const classes = useStyles();
     
     const borders = info.borders.length > 0 ?( 
@@ -81,6 +81,7 @@ export default function Country ({info}){
         <motion.div exit={{opacity: 0}} initial={{opacity: 0}} animate={{opacity: 1}}>
       <Container maxWidth="lg" className={classes.root}>
         <Grid container  justify='space-around' spacing={6} >
+            
             <Grid item xs={12}>
                 <BackButton/>
             </Grid>
@@ -139,6 +140,8 @@ export default function Country ({info}){
      </motion.div>
     );
 }
+
+
 
 
 export const getServerSideProps:GetServerSideProps = async ctx => {
