@@ -9,12 +9,8 @@ import theme from '../src/theme';
 import {  AnimatePresence } from "framer-motion"
 
 import Navigation from '../src/Navigation'
-import { Router } from 'next/router';
-
-
 import NextNProgress from 'nextjs-progressbar'
-// import Nprogress from 'nprogress'
-// import 'nprogress/nprogress.css'
+
 
 
 export default function MyApp(props) {
@@ -22,24 +18,6 @@ export default function MyApp(props) {
 
   const [search,setSearch] = useState('');
   const [continent,setContinent] = useState('all');
-
-  // Router.events.on('routeChangeStart', ()=>{
-  //   Nprogress.start();
-  // })
-
-  // Router.events.on('routeChangeComplete', ()=>{
-  //   Nprogress.done();
-  // })
-
-  // Router.events.on('routeChangeError', ()=>{
-  //   Nprogress.done();
-  // })
-
-//   routeChangeStart(url) - Fires when a route starts to change
-// routeChangeComplete(url) - Fires when a route changed completely
-// routeChangeError(err, url)
-
-
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.

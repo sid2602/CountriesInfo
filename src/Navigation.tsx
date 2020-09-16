@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Dispatch } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -93,14 +93,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function Navigation({setContinent,setSearch,continent,search}) {
+type Props = {
+  setContinent: Dispatch<string>,
+  setSearch: Dispatch<string>,
+  continent: string,
+  search: string
+}
+
+export default function Navigation({setContinent,setSearch,continent,search}:Props) {
   const classes = useStyles();
 
   const router = useRouter();
 
-  // const [region, setRegion] = useState("all");
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | any>) => {
 
     if(event.target?.name as string === 'input')
       setSearch(event.target.value as string)

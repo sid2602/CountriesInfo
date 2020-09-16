@@ -3,7 +3,11 @@ import Button from "@material-ui/core/Button";
 import { useEffect, useState } from "react";
 
 
-export default function CountryButton({alpha3Code}){
+type Props = {
+    alpha3Code: string
+}
+
+export default function CountryButton({alpha3Code}:Props){
 
     const [name, setName] = useState(null);
 

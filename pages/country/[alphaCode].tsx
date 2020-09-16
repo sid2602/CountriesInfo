@@ -11,6 +11,7 @@ import Slide from '@material-ui/core/Slide';
 import BackButton from '../../src/BackButton'
 import CountryButton from '../../src/CountryButton'
 
+import {CountryDataDetails} from '../../interfaces/interfaces'
 
 import {motion} from 'framer-motion'
 const useStyles = makeStyles((theme: Theme) =>
@@ -67,13 +68,17 @@ const useStyles = makeStyles((theme: Theme) =>
     
   }));
 
+type Props = {
+    info: CountryDataDetails
+}
 
-export default function Country ({info}){
+
+export default function Country ({info}:Props){
     
     const classes = useStyles();
     
-    const borders = info.borders.length > 0 ?( 
-        info.borders.map(alpha3Code => <CountryButton key={alpha3Code} alpha3Code={alpha3Code}/>) 
+    const borders = info!.borders.length > 0 ?( 
+        info?.borders.map((alpha3Code: string) => <CountryButton key={alpha3Code} alpha3Code={alpha3Code}/>) 
     ): <Typography variant="h5" component="h5" className={classes.borders}> {info.name} has no neighbors </Typography>
 
 
@@ -114,8 +119,8 @@ export default function Country ({info}){
                    
                    Demonym <span className={classes.span}>{info.demonym}</span><br/>
                    Native name: <span className={classes.span}>{info.nativeName}</span><br/>
-                   Languages: <span className={classes.span}>{info.languages[0]?.name}</span><br/>
-                   Currencies: <span className={classes.span}>{info.currencies[0]?.name} {info.currencies[0]?.symbol}</span><br/>
+                   Languages: <span className={classes.span}>{info.languages[0].name}</span><br/>
+                   Currencies: <span className={classes.span}>{info.currencies[0].name} {info.currencies[0].symbol}</span><br/>
                    Top level domain: <span className={classes.span}>{info.topLevelDomain}</span><br/>
                    
                </Typography>
@@ -145,29 +150,16 @@ export default function Country ({info}){
 
 
 export const getServerSideProps:GetServerSideProps = async ctx => {
-    const {alphaCode} = ctx.params;
+    const {alphaCode} = ctx.params!;
 
-    const response = await fetch(`https://restcountries.eu/rest/v2/alpha/${alphaCode}`)
-    const info = await response.json();
+    
+    const response:Response = await fetch(`https://restcountries.eu/rest/v2/alpha/${alphaCode}?fields=name;region;subregion;capital;population;demonym;nativeName;flag;languages;currencies;topLevelDomain;borders`)
+    const info:CountryDataDetails = await response.json();
 
-    if(info.region === '') info.region = 'Unknown'
-    if(info.subregion === '') info.subregion = 'Unknown'
-    if(info.capital === '') info.capital = 'Unknown'
-    if(info.demonym === '') info.demonym = 'Unknown'
+    if(info?.region === '') info.region = 'Unknown'
+    if(info?.subregion === '') info.subregion = 'Unknown'
+    if(info?.capital === '') info.capital = 'Unknown'
+    if(info?.demonym === '') info.demonym = 'Unknown'
 
     return {props: {info}}
 }
-
-// export const getStaticPaths:GetStaticPaths = () => {
-//     const mostPopularCountries: Array<string> = ['FRA','USA','CHN','ESP','ITA','TUR','GBR','DEU','RUS','AUT','HKG','THA',"SAU",'GRC','CAN','POL'];
-//     const paths = mostPopularCountries.map(country => {
-//         return {params: {alphaCode: country}}
-//     })
-
-//     return {
-//         // falback: false,
-//         paths,
-//         fallback: false,
-//     }
-
-// }

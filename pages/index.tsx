@@ -2,6 +2,13 @@ import { GetStaticProps, GetServerSideProps } from "next"
 import {useState,useEffect} from 'react'
 import Link from 'next/link'
 
+//Types
+import {CountryData} from '../interfaces/interfaces'
+
+//Functions
+import searchCountry from '../src/SearchCountry'
+
+
 //Material
 
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -50,7 +57,6 @@ const useStyles = makeStyles((theme: Theme) =>
       textDecoration: 'none',
     },
     badSearch:{
-      // width: '300px',
       display: 'flex',
       flexDirection: 'column',
       width: '50%',
@@ -62,63 +68,49 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-export default function Home({countries,search,continent}) {
+type MainProps = {
+  countries: CountryData[] | undefined,
+  search: string,
+  continent: string,
+}
+
+
+
+export default function Home({countries,search,continent}:MainProps) {
   
   const classes = useStyles();
   
-  const [countriesToShow,setCountries] = useState([])
-  const [filters,setFilters] = useState([])
+  const [countriesToShow,setCountries] = useState<CountryData[]>([])
+  const [filters,setFilters] = useState<CountryData[] >([])
 
   useEffect(()=>{
 
-    const searchCountry = async (name) => {
-
-      let resp,json=[];
-
-
-      //if u search country and change continent
-      if(search !== '' && continent !== 'all'){
-        resp = await fetch(`https://restcountries.eu/rest/v2/name/${search}?fields=name;population;region;flag;alpha3Code`);
-        const arr = await resp.json();
-
-        arr.map(country => country.region === continent && json.push(country))
-        
-
-      }else{
-
-        
-        //other ways
-
-      if(search !== '' && continent === 'all')
-         resp = await fetch(`https://restcountries.eu/rest/v2/name/${search}?fields=name;population;region;flag;alpha3Code`);
-      else if(search === '' && continent !== 'all')
-        resp = await fetch(`https://restcountries.eu/rest/v2/region/${continent}?fields=name;population;region;flag;alpha3Code`);
-      
-      
-       json = await resp.json();
-
-      }
-    
-
-      if(json.length>0){
-        setFilters(json)
-        setCountries(json.slice(0,20))
-      }
-      else{
-        setFilters([])
-        setCountries([])
-      } 
-    }
-
 
     if(search !== '' || continent !== 'all'){
-      searchCountry(search);
+
+      searchCountry(search,continent)
+      .then(json =>{
+        
+        console.log(json)
+
+        if(json.length>0){
+          setFilters(json)
+          setCountries(json.slice(0,20))
+        }
+        else{
+          setFilters([])
+          setCountries([])
+        } 
+      })
+
     }
     
+    //if no filters
+
     if(search === '' && continent === 'all')
     {
       setFilters([])
-      setCountries(countries.slice(0,20))
+      setCountries(countries!.slice(0,20))
     }
 
 
@@ -133,7 +125,7 @@ export default function Home({countries,search,continent}) {
     if(filters.length>0){
       setCountries(countriesToShow.concat(filters.slice(length,length+20)))
     }else{
-      setCountries(countriesToShow.concat(countries.slice(length,length+20)))
+      setCountries(countriesToShow.concat(countries!.slice(length,length+20)))
     }
 
   }
@@ -145,7 +137,7 @@ export default function Home({countries,search,continent}) {
       {filters.length > 0 || countriesToShow.length > 0 ?<InfiniteScroll
         dataLength={countriesToShow.length}
         next={handleScroll}
-        hasMore={filters.length>0? filters.length>countriesToShow.length : countries.length>countriesToShow.length}
+        hasMore={filters.length>0? filters.length>countriesToShow.length : countries!.length>countriesToShow.length}
         loader={<h4>Loading</h4>}
         style={{overflow:'hidden'}}
       >
@@ -196,15 +188,6 @@ export default function Home({countries,search,continent}) {
     </motion.div>
      ) 
 }
-
-export interface CountryData {
-  name: string,
-  population: number,
-  region: string,
-  flag: string,
-  alpha3Code: string
-}
-
 
 export const getStaticProps:GetStaticProps = async() => {
     const resp = await fetch('https://restcountries.eu/rest/v2/all?fields=name;population;region;flag;alpha3Code');
