@@ -23,9 +23,9 @@ https://countries-info-nu.vercel.app/
 
 ## Screenshots
 
-![mainPage](./assets/1.png)
+![mainPage](./assets/screenshot1.png)
 
-![CountryDetails](./assets/2.png)
+![CountryDetails](./assets/screenshot2.png)
 
 ## Inspiration
 
