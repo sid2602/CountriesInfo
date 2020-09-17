@@ -10,6 +10,7 @@ https://countries-info-nu.vercel.app/
 ## Technologies
 
 - React 16.13.1
+- React Hooks
 - Next 9.5.2
 - TypeScript 4.0.2
 - Material Ui
